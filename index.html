@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Page</title>
+</head>
+<body>
+    <h1>Web Page</h1>
+    <p>This is a test page for JS injection.</p>
+
+    <script>
+        // 假设你已经知道脚本的 ID
+        var scriptId = '123456789'; // 用实际的 ID 替换
+
+        function injectScript(url) {
+            var script = document.createElement('script');
+            script.src = url;
+            script.type = 'text/javascript';
+            document.head.appendChild(script);
+        }
+
+        injectScript('http://localhost:3000/inject/' + scriptId); // 动态注入脚本
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inject JS Code</title>
+</head>
+<body>
+    <h1>输入 JavaScript 代码</h1>
+    <form id="jsForm">
+        <textarea id="jsCode" rows="10" cols="50" placeholder="在这里输入 JavaScript 代码"></textarea><br>
+        <button type="submit">提交代码</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('jsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const jsCode = document.getElementById('jsCode').value;
+            
+            if (!jsCode) {
+                alert('请提供 JavaScript 代码');
+                return;
+            }
+
+            fetch('http://localhost:3000/inject', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code: jsCode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const scriptId = data.scriptId;
+                document.getElementById('result').innerHTML = `
+                    <p>代码已提交成功！访问者页面将执行您的代码。</p>
+                    <p>您可以通过以下链接让别人执行此代码：</p>
+                    <a href="http://localhost:3000/inject/${scriptId}" target="_blank">访问脚本链接</a>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('提交代码失败，请稍后再试。');
+            });
+        });
+    </script>
+</body>
+</html>
